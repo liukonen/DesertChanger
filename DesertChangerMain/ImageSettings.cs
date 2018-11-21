@@ -36,7 +36,9 @@ namespace DesertChangerMain
             int I = 0;
             foreach (string item in images)
             {
-                response.Add(Sunset.Add(new TimeSpan(0, I * Spacer, 0)), item);
+                TimeSpan T = Sunset.Add(new TimeSpan(0, I * Spacer, 0));
+                if (T.Days > 0) {T= T.Add(new TimeSpan(-T.Days, 0, 0, 0)); }
+                response.Add(T, item);
                 I += 1;
             }
             return response;
@@ -52,10 +54,12 @@ namespace DesertChangerMain
 
         public static string[] PopupMenuForDayImages()
         {
-            System.Windows.Forms.OpenFileDialog dialog = new OpenFileDialog();
-            dialog.DefaultExt = "Jpg(*.jpg) | *.jpg";
-            dialog.Title = "Day time image(s)";
-            dialog.Multiselect = true;
+            System.Windows.Forms.OpenFileDialog dialog = new OpenFileDialog
+            {
+                DefaultExt = "Jpg(*.jpg) | *.jpg",
+                Title = "Day time image(s)",
+                Multiselect = true
+            };
             dialog.ShowDialog();
             AppSettings.AddupdateAppSettingsEncrypted("DayImages", string.Join("|", dialog.FileNames));
             return dialog.FileNames;
@@ -70,10 +74,12 @@ namespace DesertChangerMain
 
         public static string[] PopupMenuForNightImages()
         {
-            System.Windows.Forms.OpenFileDialog dialog = new OpenFileDialog();
-            dialog.DefaultExt = "Jpg(*.jpg) | *.jpg";
-            dialog.Title = "Night time image(s)";
-            dialog.Multiselect = true;
+            System.Windows.Forms.OpenFileDialog dialog = new OpenFileDialog
+            {
+                DefaultExt = "Jpg(*.jpg) | *.jpg",
+                Title = "Night time image(s)",
+                Multiselect = true
+            };
             dialog.ShowDialog();
             AppSettings.AddupdateAppSettingsEncrypted("NightImages", string.Join("|", dialog.FileNames));
             return dialog.FileNames;

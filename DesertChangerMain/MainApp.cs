@@ -36,8 +36,10 @@ namespace DesertChangerMain
 
         private void OnTimedEvent(object sender, EventArgs e)
         {
-            string S = (from KeyValuePair<TimeSpan, string> i in ImageSpans where i.Key < DateTime.Now.TimeOfDay orderby i.Key descending select i.Value).First();
-            if (!string.Equals(S, ActiveString))
+            if (ImageSpans.Count > 0) { 
+            string S = (from KeyValuePair<TimeSpan, string> i in ImageSpans where i.Key < DateTime.Now.TimeOfDay orderby i.Key descending select i.Value).FirstOrDefault();
+                if (String.IsNullOrWhiteSpace(S)) { S = (from KeyValuePair<TimeSpan, string> i in ImageSpans  orderby i.Key descending select i.Value).FirstOrDefault(); }
+                if (!string.Equals(S, ActiveString))
             {
                 ActiveString = S;
                 Wallpaper.Set(S, Wallpaper.Style.Stretched);
@@ -47,10 +49,10 @@ namespace DesertChangerMain
                 LastDayUpdates = (byte)DateTime.Now.Day;
                 RefreshSettings();
             }
+            }
         }
 
         public void MenuSettingsUpdateLocation(object sender, EventArgs e) { RefreshLocation(); }
-
 
         public void MenuSettingsUpdateDayImages(object sender, EventArgs e) { ImageSettings.PopupMenuForDayImages(); }
 
@@ -100,7 +102,7 @@ namespace DesertChangerMain
         private void CreateTimer()
 
         {
-            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer { Interval = 180000 };
+            System.Windows.Forms.Timer t = new System.Windows.Forms.Timer { Interval = 18000 };
             t.Tick += new EventHandler(OnTimedEvent);
             t.Start();
             OnTimedEvent(null, null);

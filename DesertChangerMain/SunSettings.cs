@@ -55,19 +55,19 @@ namespace DesertChangerMain
 
         public double SunDeclin => DEGREES(Math.Asin(Math.Sin(RADIANS(ObliqCorr)) * Math.Sin(RADIANS(SunAppLong))));
 
-        public double y => Math.Tan(RADIANS(ObliqCorr / 2)) * Math.Tan(RADIANS(ObliqCorr / 2));
+        public double Y => Math.Tan(RADIANS(ObliqCorr / 2)) * Math.Tan(RADIANS(ObliqCorr / 2));
 
-        public double EqofTime => 4 * DEGREES(y * Math.Sin(2 * RADIANS(GeomMeanLongSun)) - 2 * EccentEarthOrbit * Math.Sin(RADIANS(GeomMeanAnomSun)) + 4 * EccentEarthOrbit * y * Math.Sin(RADIANS(GeomMeanAnomSun)) * Math.Cos(2 * RADIANS(GeomMeanLongSun)) - 0.5 * y * y * Math.Sin(4 * RADIANS(GeomMeanLongSun)) - 1.25 * EccentEarthOrbit * EccentEarthOrbit * Math.Sin(2 * RADIANS(GeomMeanAnomSun)));
+        public double EqofTime => 4 * DEGREES(Y * Math.Sin(2 * RADIANS(GeomMeanLongSun)) - 2 * EccentEarthOrbit * Math.Sin(RADIANS(GeomMeanAnomSun)) + 4 * EccentEarthOrbit * Y * Math.Sin(RADIANS(GeomMeanAnomSun)) * Math.Cos(2 * RADIANS(GeomMeanLongSun)) - 0.5 * Y * Y * Math.Sin(4 * RADIANS(GeomMeanLongSun)) - 1.25 * EccentEarthOrbit * EccentEarthOrbit * Math.Sin(2 * RADIANS(GeomMeanAnomSun)));
 
         public double HASunrise => DEGREES(Math.Acos(Math.Cos(RADIANS(90.833)) / (Math.Cos(RADIANS(GeoCord.Latitude)) * Math.Cos(RADIANS(SunDeclin))) - Math.Tan(RADIANS(GeoCord.Latitude)) * Math.Tan(RADIANS(SunDeclin))));
 
-        private double pSolarNoon => (720 - 4 * GeoCord.Longitude - EqofTime + TimeZoneOffset* 60) / 1440;
+        private double PSolarNoon => (720 - 4 * GeoCord.Longitude - EqofTime + TimeZoneOffset* 60) / 1440;
 
-        public TimeSpan SolarNoon => DateTime.FromOADate(pSolarNoon).TimeOfDay;
+        public TimeSpan SolarNoon => DateTime.FromOADate(PSolarNoon).TimeOfDay;
 
-        public TimeSpan SunriseTime => DateTime.FromOADate(pSolarNoon - HASunrise * 4 / 1440).TimeOfDay;
+        public TimeSpan SunriseTime => DateTime.FromOADate(PSolarNoon - HASunrise * 4 / 1440).TimeOfDay;
 
-        public TimeSpan SunsetTime => DateTime.FromOADate(pSolarNoon + HASunrise * 4 / 1440).TimeOfDay;
+        public TimeSpan SunsetTime => DateTime.FromOADate(PSolarNoon + HASunrise * 4 / 1440).TimeOfDay;
 
         public double SunlightDuration => 8 * HASunrise;
 
@@ -91,7 +91,7 @@ namespace DesertChangerMain
 
         private double DEGREES(double radians) { return radians * (180 / Math.PI); }
 
-        private double fIF(bool condition, double out1, double out2) { if (condition) { return out1; } return out2; }
+        private double FIF(bool condition, double out1, double out2) { if (condition) { return out1; } return out2; }
         private double POWER(double A, double b) { return Math.Pow(A, b); }
     }
 }
